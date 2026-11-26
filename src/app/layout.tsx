@@ -38,7 +38,10 @@ export const metadata: Metadata = {
     images: [business.heroImage.src],
   },
   robots: {
-    index: false, // flip to true once live
+    // Still a staging/preview environment until Khush signs off on the
+    // rebuild. Flip to true once we're ready to compete with the live
+    // WordPress site for the brand's search traffic.
+    index: false,
     follow: false,
   },
 };
