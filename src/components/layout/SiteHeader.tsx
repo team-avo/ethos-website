@@ -4,13 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { business } from '@/data/business';
-import { desktopPrimary, mobileFlat, type NavGroup, type NavLink } from '@/data/nav';
+import { primaryNav, isGroup, type NavGroup, type NavLink } from '@/data/nav';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
-
-function isGroup(item: NavLink | NavGroup): item is NavGroup {
-  return 'items' in item;
-}
 
 function DesktopNavItem({ item }: { item: NavLink | NavGroup }) {
   const [open, setOpen] = useState(false);
@@ -19,12 +15,34 @@ function DesktopNavItem({ item }: { item: NavLink | NavGroup }) {
     return (
       <Link
         href={item.href}
-        className="text-sm font-medium text-white/80 transition hover:text-highlight"
+        className="text-sm font-medium text-white/85 transition hover:text-highlight"
       >
         {item.label}
       </Link>
     );
   }
+
+  // Group label: a plain button, or a link when the group itself has an href.
+  const Label = item.href ? (
+    <Link
+      href={item.href}
+      className="flex items-center gap-1 text-sm font-medium text-white/85 transition hover:text-highlight"
+    >
+      {item.label}
+      <Caret />
+    </Link>
+  ) : (
+    <button
+      type="button"
+      className="flex items-center gap-1 text-sm font-medium text-white/85 transition hover:text-highlight"
+      aria-expanded={open}
+      aria-haspopup="true"
+      onClick={() => setOpen((v) => !v)}
+    >
+      {item.label}
+      <Caret />
+    </button>
+  );
 
   return (
     <div
@@ -32,18 +50,7 @@ function DesktopNavItem({ item }: { item: NavLink | NavGroup }) {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <button
-        type="button"
-        className="flex items-center gap-1 text-sm font-medium text-white/80 transition hover:text-highlight"
-        aria-expanded={open}
-        aria-haspopup="true"
-        onClick={() => setOpen((v) => !v)}
-      >
-        {item.label}
-        <svg viewBox="0 0 12 12" aria-hidden="true" className="h-3 w-3 fill-current">
-          <path d="M6 8L1 3h10z" />
-        </svg>
-      </button>
+      {Label}
       {open && (
         <div className="absolute left-1/2 top-full z-50 w-64 -translate-x-1/2 pt-3">
           <ul className="overflow-hidden rounded-xl border border-ink bg-card py-2 shadow-xl">
@@ -51,7 +58,7 @@ function DesktopNavItem({ item }: { item: NavLink | NavGroup }) {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="block px-4 py-2 text-sm text-white/80 transition hover:bg-ink hover:text-highlight"
+                  className="block px-4 py-2 text-sm text-white/85 transition hover:bg-ink hover:text-highlight"
                 >
                   {link.label}
                 </Link>
@@ -61,6 +68,63 @@ function DesktopNavItem({ item }: { item: NavLink | NavGroup }) {
         </div>
       )}
     </div>
+  );
+}
+
+function Caret() {
+  return (
+    <svg viewBox="0 0 12 12" aria-hidden="true" className="h-3 w-3 fill-current">
+      <path d="M6 8L1 3h10z" />
+    </svg>
+  );
+}
+
+function MobileGroup({ group, onNavigate }: { group: NavGroup; onNavigate: () => void }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-semibold text-white/90 hover:bg-card hover:text-highlight"
+      >
+        {group.label}
+        <svg
+          viewBox="0 0 12 12"
+          aria-hidden="true"
+          className={`h-3 w-3 fill-current transition-transform ${open ? 'rotate-180' : ''}`}
+        >
+          <path d="M6 8L1 3h10z" />
+        </svg>
+      </button>
+      {open && (
+        <ul className="ml-3 border-l border-ink pl-3">
+          {group.href && (
+            <li>
+              <Link
+                href={group.href}
+                onClick={onNavigate}
+                className="block rounded-lg px-3 py-2 text-sm text-white/80 hover:bg-card hover:text-highlight"
+              >
+                {group.label} overview
+              </Link>
+            </li>
+          )}
+          {group.items.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                onClick={onNavigate}
+                className="block rounded-lg px-3 py-2 text-sm text-white/80 hover:bg-card hover:text-highlight"
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </li>
   );
 }
 
@@ -79,7 +143,7 @@ function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => void })
         className="absolute inset-0 bg-black/60"
       />
       <div
-        className={`absolute right-0 top-0 h-full w-[85%] max-w-sm overflow-y-auto border-l border-ink bg-page p-6 transition-transform ${
+        className={`absolute right-0 top-0 h-full w-80 max-w-[85%] overflow-y-auto border-l border-ink bg-page p-6 transition-transform ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -99,17 +163,21 @@ function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => void })
           </button>
         </div>
         <ul className="flex flex-col gap-1">
-          {mobileFlat.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                onClick={onClose}
-                className="block rounded-lg px-3 py-2.5 text-sm text-white/90 hover:bg-card hover:text-highlight"
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
+          {primaryNav.map((item) =>
+            isGroup(item) ? (
+              <MobileGroup key={item.label} group={item} onNavigate={onClose} />
+            ) : (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={onClose}
+                  className="block rounded-lg px-3 py-2.5 text-sm font-semibold text-white/90 hover:bg-card hover:text-highlight"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ),
+          )}
         </ul>
         <div className="mt-6 flex flex-col gap-3 border-t border-ink pt-6">
           <Button href={business.phone.tel} variant="primary" external>
@@ -128,9 +196,9 @@ export function SiteHeader() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink bg-page/95 backdrop-blur">
+    <header className="sticky top-0 z-40 bg-primary shadow-[0px_2px_45px_var(--color-banner)]">
       {/* Top ribbon — eBook CTA */}
-      <div className="border-b border-ink bg-primary">
+      <div className="border-b border-white/10 bg-primary">
         <Container className="flex items-center justify-center py-2 text-xs text-white/80 md:text-sm">
           <Link
             href="/ebook-about-addiction/"
@@ -150,13 +218,13 @@ export function SiteHeader() {
             width={business.logo.width}
             height={business.logo.height}
             priority
-            className="h-10 w-auto"
+            className="h-[60px] w-auto"
           />
         </Link>
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary">
-          {desktopPrimary.map((item) => (
+          {primaryNav.map((item) => (
             <DesktopNavItem key={item.label} item={item} />
           ))}
         </nav>
@@ -165,7 +233,7 @@ export function SiteHeader() {
         <div className="hidden items-center gap-3 lg:flex">
           <a
             href={business.phone.tel}
-            className="text-sm font-semibold text-white/80 hover:text-highlight"
+            className="text-sm font-semibold text-white/85 hover:text-highlight"
           >
             {business.phone.display}
           </a>
@@ -175,7 +243,7 @@ export function SiteHeader() {
         <button
           type="button"
           onClick={() => setDrawerOpen(true)}
-          className="rounded-full border border-ink p-2 text-white hover:border-highlight lg:hidden"
+          className="rounded-full border border-white/20 p-2 text-white hover:border-highlight lg:hidden"
           aria-label="Open menu"
           aria-expanded={drawerOpen}
         >

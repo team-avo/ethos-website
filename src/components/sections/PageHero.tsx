@@ -4,7 +4,7 @@ import { Container } from '@/components/ui/Container';
 type Props = {
   eyebrow?: string;
   h1: string;
-  lead: string;
+  lead?: string;
   backdrop?: 'primary' | 'page';
   children?: ReactNode;
 };
@@ -28,9 +28,11 @@ export function PageHero({
         <h1 className="max-w-4xl text-4xl font-bold leading-tight text-white md:text-6xl">
           {h1}
         </h1>
-        <p className="mt-6 max-w-3xl text-base leading-relaxed text-white/85 md:text-lg">
-          {lead}
-        </p>
+        {lead && (
+          <p className="mt-6 max-w-3xl text-base leading-relaxed text-white/85 md:text-lg">
+            {lead}
+          </p>
+        )}
         {children && <div className="mt-8">{children}</div>}
       </Container>
     </section>

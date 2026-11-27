@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import { HomeHero } from '@/components/sections/HomeHero';
-import { Callout } from '@/components/sections/Callout';
+import { HomeHero, HeroVideoSection } from '@/components/sections/HomeHero';
 import { ProgramsGrid } from '@/components/sections/ProgramsGrid';
 import { LeadMagnet } from '@/components/sections/LeadMagnet';
 import { Partners } from '@/components/sections/Partners';
@@ -28,7 +27,7 @@ export default async function HomePage() {
         }}
       />
       <HomeHero />
-      <Callout />
+      <HeroVideoSection />
       <ProgramsGrid />
       <LeadMagnet />
       <Partners />

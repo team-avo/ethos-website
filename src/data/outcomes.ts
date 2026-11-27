@@ -1,6 +1,9 @@
 /**
  * /outcomes/ page content — centralized so copy edits don't touch TSX.
- * Numbers verbatim from the live Petree Consulting 2023 evaluation.
+ * Wording and numbers match the live Petree Consulting Summer 2023
+ * evaluation report (members 2016–2023). See
+ * arh-agent-docs/wordpress-export/text/outcomes.txt — the source of truth.
+ * Do not overstate results beyond that report's wording.
  */
 
 export const methodologySteps = [
@@ -32,7 +35,7 @@ export const memberStats = [
 ] as const;
 
 export const memberStatsCaption =
-  'Ethos is a program for males only, averaging 26 years old on arrival. By spring 2023, 165 members had come to the house, ten of whom were in program at that time. Not all house members stay engaged with Ethos for the recommended duration — two-thirds (66%) depart after having completed one-quarter, or less, of the program, staying an average of 43 days.';
+  'Ethos is a program for males only, averaging 26 years old on arrival. By spring 2023, 165 members had come to the house, ten of whom were in program at that time. Not all house members stay engaged with Ethos for the recommended duration — two-thirds (66%) depart after having completed one-quarter, or less, of the program, staying an average of 43 days. Seven percent stay about half the recommended time (average 161 days), nine percent stay about three-quarters (average 270 days), and 18% fully complete the program (average 449 days).';
 
 export const postProgramCounts = [
   { value: '33', label: 'Respondents at 3 months' },
@@ -92,7 +95,7 @@ export const lifeOutcomeCharts: readonly ChartBlock[] = [
     eyebrow: 'Life outcome',
     heading: 'Substance use',
     scaleCaption: 'Self-reported abstinence post-program',
-    body: 'Members are asked about substance use at 3, 6 and 12 months post-program. Program completers consistently report sustained abstinence, while the remaining sample shows mixed outcomes.',
+    body: 'After departure, members are asked whether they are abstinent from drugs and alcohol. Most reported abstinence, early after the program and through the first year. Most reported being abstinent whether they completed the program or not.',
     chartSrc: '/images/outcomes/substance-use.jpg',
     chartAlt: 'Chart of self-reported substance use at 3, 6 and 12 months after leaving Ethos',
   },
@@ -100,7 +103,7 @@ export const lifeOutcomeCharts: readonly ChartBlock[] = [
     eyebrow: 'Life outcome',
     heading: 'Family functioning',
     scaleCaption: 'Family-relationship self-report',
-    body: 'Family functioning is one of the strongest signals of sustainable recovery. Ethos members report improved family relationships both during the program and across the post-program survey windows.',
+    body: "After departure, members are asked whether they have experienced improvements in important family relationships. Most members reported 'improved a little bit' or 'improved greatly' — shown as 'Improved' in the figure — from early after departure through the first year.",
     chartSrc: '/images/outcomes/family-functioning.png',
     chartAlt: 'Chart of self-reported family functioning scores improving post-program',
   },
@@ -108,7 +111,7 @@ export const lifeOutcomeCharts: readonly ChartBlock[] = [
     eyebrow: 'Life outcome',
     heading: 'Employment',
     scaleCaption: 'Employment status self-report',
-    body: 'Members are asked about employment status at each post-program survey. The majority of program completers report full-time employment within 12 months of leaving the program.',
+    body: 'Members are asked to rate whether their employment status has improved, declined, or stayed the same. Most — particularly those who complete the program — report improved employment status throughout the year after the program, and those improvements are better maintained by completers than by those who do not complete.',
     chartSrc: '/images/outcomes/employment.png',
     chartAlt: 'Chart of employment status at 3, 6 and 12 months post-program',
   },
@@ -116,7 +119,7 @@ export const lifeOutcomeCharts: readonly ChartBlock[] = [
     eyebrow: 'Life outcome',
     heading: 'Educational goals',
     scaleCaption: 'Education-goal progress',
-    body: 'Educational goal progress — whether completing a degree, certificate, or program-of-study — is measured at each post-program survey. Ethos members report continued progress on educational goals through 12 months post-program.',
+    body: 'Members are asked to rate whether their education goals have improved, declined, or stayed the same. The figure shows the proportion of respondents who indicated they improved a little or greatly over the first year after Ethos.',
     chartSrc: '/images/outcomes/education.png',
     chartAlt: 'Chart of educational goal progress at 3, 6 and 12 months post-program',
   },
@@ -124,20 +127,17 @@ export const lifeOutcomeCharts: readonly ChartBlock[] = [
     eyebrow: 'Life outcome',
     heading: 'Satisfaction with life',
     scaleCaption: 'Life-satisfaction self-report',
-    body: 'Life satisfaction is a holistic measure that correlates strongly with sustained recovery. Ethos members report meaningful and sustained gains in life satisfaction across every post-program window.',
+    body: 'Members are asked to rate whether their satisfaction with life has improved, declined, or stayed the same. Shown here are the proportion of respondents who reported improved or greatly improved life satisfaction.',
     chartSrc: '/images/outcomes/satisfaction.png',
     chartAlt: 'Chart of life-satisfaction self-report improving across the post-program survey windows',
   },
 ] as const;
 
 export const reports = [
-  {
-    year: 2023,
-    title: 'Ethos Recovery 2023 Evaluation Report',
-    href: '/reports/ethos-2023-evaluation.pdf',
-    sizeLabel: 'PDF',
-    byline: 'Petree Consulting',
-  },
+  // NOTE: the live /outcomes/ page references a "2023 Report" download, but no
+  // 2023 PDF exists in the WordPress media library (handbook §3.8, §9#4). Only
+  // the 2020 report is a real file, so it is the only entry here. If the client
+  // supplies the 2023 PDF, drop it in public/reports/ and re-add an entry.
   {
     year: 2020,
     title: 'Ethos Recovery 2020 Evaluation Report',

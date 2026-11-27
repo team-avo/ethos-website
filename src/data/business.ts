@@ -5,7 +5,7 @@
 
 export const business = {
   name: 'Ethos Recovery',
-  legalName: 'Ethos Recovery',
+  legalName: 'Ethos Recovery, LLC',
   tagline: 'Sober Living Community in Los Angeles',
   description:
     'Structured sober living for men in Los Angeles. Three levels of support, from our Flagship Program to recovery apartments in Culver City.',
@@ -25,8 +25,8 @@ export const business = {
       'https://maps.google.com/?q=3914+Tuller+Ave%2C+Culver+City%2C+CA+90230',
   },
   geo: {
-    latitude: 34.0055,
-    longitude: -118.4047,
+    latitude: 33.98319,
+    longitude: -118.39522,
   },
   heroImage: {
     src: '/images/hero-poster.jpg',
