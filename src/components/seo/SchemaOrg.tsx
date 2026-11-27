@@ -6,7 +6,12 @@ type SchemaType =
   | 'BreadcrumbList'
   | 'Service'
   | 'Place'
-  | 'Article';
+  | 'Article'
+  | 'Person';
+
+// Matches the live Ethos SEO plugin @id scheme.
+const ORG_ID = `${business.url}/#organization`;
+const WEBSITE_ID = `${business.url}/#website`;
 
 type Breadcrumb = { name: string; url: string };
 
@@ -22,7 +27,16 @@ type Article = {
   description: string;
   author?: { type: 'Organization' | 'Person'; name: string };
   datePublished?: string;
+  dateModified?: string;
+  image?: string;
   about?: string;
+};
+
+type Person = {
+  name: string;
+  jobTitle?: string;
+  description?: string;
+  image?: string;
 };
 
 type Props = {
@@ -31,12 +45,13 @@ type Props = {
   breadcrumbs?: Breadcrumb[];
   service?: Service;
   article?: Article;
+  person?: Person;
 };
 
 function localBusiness() {
   return {
     '@type': 'LocalBusiness',
-    '@id': `${business.url}#org`,
+    '@id': ORG_ID,
     name: business.name,
     url: business.url,
     telephone: business.phone.e164,
@@ -61,11 +76,11 @@ function localBusiness() {
 function website(page: Props['page']) {
   return {
     '@type': 'WebSite',
-    '@id': `${business.url}#website`,
+    '@id': WEBSITE_ID,
     url: business.url,
     name: business.name,
     description: page.description,
-    publisher: { '@id': `${business.url}#org` },
+    publisher: { '@id': ORG_ID },
   };
 }
 
@@ -88,7 +103,7 @@ function serviceSchema(s: Service) {
     description: s.description,
     serviceType: s.serviceType ?? 'Sober Living',
     areaServed: s.areaServed ?? 'Los Angeles',
-    provider: { '@id': `${business.url}#org` },
+    provider: { '@id': ORG_ID },
   };
 }
 
@@ -98,12 +113,26 @@ function articleSchema(a: Article, page: Props['page']) {
     headline: a.headline,
     description: a.description,
     url: page.url,
-    publisher: { '@id': `${business.url}#org` },
+    publisher: { '@id': ORG_ID },
+    ...(a.image && { image: a.image }),
     ...(a.author && {
       author: { '@type': a.author.type, name: a.author.name },
     }),
     ...(a.datePublished && { datePublished: a.datePublished }),
+    ...(a.dateModified && { dateModified: a.dateModified }),
     ...(a.about && { about: { '@type': 'Thing', name: a.about } }),
+  };
+}
+
+function personSchema(p: Person, page: Props['page']) {
+  return {
+    '@type': 'Person',
+    name: p.name,
+    url: page.url,
+    worksFor: { '@id': ORG_ID },
+    ...(p.jobTitle && { jobTitle: p.jobTitle }),
+    ...(p.description && { description: p.description }),
+    ...(p.image && { image: p.image }),
   };
 }
 
@@ -122,7 +151,14 @@ function placeSchema() {
   };
 }
 
-export function SchemaOrg({ types, page, breadcrumbs, service, article }: Props) {
+export function SchemaOrg({
+  types,
+  page,
+  breadcrumbs,
+  service,
+  article,
+  person,
+}: Props) {
   const graph: Record<string, unknown>[] = [];
   if (types.includes('LocalBusiness')) graph.push(localBusiness());
   if (types.includes('WebSite')) graph.push(website(page));
@@ -131,6 +167,7 @@ export function SchemaOrg({ types, page, breadcrumbs, service, article }: Props)
   if (types.includes('Service') && service) graph.push(serviceSchema(service));
   if (types.includes('Place')) graph.push(placeSchema());
   if (types.includes('Article') && article) graph.push(articleSchema(article, page));
+  if (types.includes('Person') && person) graph.push(personSchema(person, page));
 
   const payload = { '@context': 'https://schema.org', '@graph': graph };
   return (

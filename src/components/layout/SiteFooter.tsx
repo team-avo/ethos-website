@@ -14,18 +14,26 @@ export async function SiteFooter() {
         <div className="space-y-4">
           <Link href="/" aria-label="Ethos Recovery home" className="inline-flex">
             <Image
-              src={business.logo.src}
+              src="/images/ethos-footer-logo.png"
               alt={business.logo.alt}
-              width={business.logo.width}
-              height={business.logo.height}
-              className="h-12 w-auto"
+              width={180}
+              height={48}
+              className="w-[180px] max-w-full"
             />
           </Link>
           <p className="text-sm text-muted">
-            Structured sober living for men in Los Angeles. Three levels of
-            support, from our Flagship Program to recovery apartments in
-            Culver City.
+            Ethos Structured Sober Living is an all male community in recovery
+            located in the heart of West Los Angeles. Our primary purpose is to
+            foster long-term sobriety through the cultivation of accountability,
+            camaraderie, &amp; character development.
           </p>
+          <Image
+            src="/images/culver-city-chamber.png"
+            alt="Culver City Chamber of Commerce member"
+            width={120}
+            height={120}
+            className="w-[120px] max-w-full"
+          />
         </div>
 
         {/* Columns */}

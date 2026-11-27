@@ -27,6 +27,9 @@
   --color-gold: #fec84b;
   --color-ash: #a6a6a6;
   --color-stone: #73787f;
+  --color-amber-light: #fbbf24;
+  --color-emerald-light: #4ade80;
+  --color-crimson-light: #f87171;
 
   /* Semantic aliases */
   --color-page: var(--color-midnight);
@@ -38,15 +41,238 @@
   --color-star: var(--color-gold);
   --color-muted: var(--color-ash);
   --color-subtle: var(--color-stone);
+  /* Mobile call bar (live theme: bg-call = amber) */
+  --color-call: var(--color-amber-light);
+  --color-hover: var(--color-stone);
 
   /* Status */
-  --color-success: #4ade80;
-  --color-danger: #f87171;
-  --color-warning: #fbbf24;
+  --color-success: var(--color-emerald-light);
+  --color-success-light: var(--color-emerald-light);
+  --color-danger: var(--color-crimson-light);
+  --color-warning: var(--color-amber-light);
+}
+
+/* Non-utility layout tokens lifted from the live theme (handbook §3.2). */
+:root {
+  --ethos-height-header: 108px;
+  --ethos-height-post-image: 240px;
+  --ethos-max-width-content: 70ch;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --ethos-height-post-image: 480px;
+  }
 }
 
 body {
   background: var(--color-page);
   color: var(--color-white);
   font-family: var(--font-sans);
+}
+
+/* Rendered HTML from WordPress (blog posts, team bios, ported page bodies).
+   Dark-theme article styling to replace the WordPress/theme prose rules. */
+.prose-ethos {
+  color: var(--color-white);
+  max-width: var(--ethos-max-width-content);
+  line-height: 1.7;
+  font-size: 1.0625rem;
+}
+.prose-ethos > :first-child {
+  margin-top: 0;
+}
+.prose-ethos p,
+.prose-ethos ul,
+.prose-ethos ol,
+.prose-ethos blockquote,
+.prose-ethos figure,
+.prose-ethos table {
+  margin: 1.25em 0;
+  color: color-mix(in srgb, var(--color-white) 88%, transparent);
+}
+.prose-ethos h1,
+.prose-ethos h2,
+.prose-ethos h3,
+.prose-ethos h4 {
+  color: var(--color-white);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 1.8em 0 0.6em;
+}
+.prose-ethos h2 {
+  font-size: 1.6rem;
+}
+.prose-ethos h3 {
+  font-size: 1.3rem;
+}
+.prose-ethos h4 {
+  font-size: 1.1rem;
+}
+.prose-ethos a {
+  color: var(--color-highlight);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-ethos a:hover {
+  opacity: 0.85;
+}
+.prose-ethos strong {
+  color: var(--color-white);
+  font-weight: 700;
+}
+.prose-ethos ul,
+.prose-ethos ol {
+  padding-left: 1.4em;
+}
+.prose-ethos ul {
+  list-style: disc;
+}
+.prose-ethos ol {
+  list-style: decimal;
+}
+.prose-ethos li {
+  margin: 0.4em 0;
+}
+.prose-ethos li::marker {
+  color: var(--color-highlight);
+}
+.prose-ethos blockquote {
+  border-left: 3px solid var(--color-highlight);
+  padding-left: 1em;
+  font-style: italic;
+  color: color-mix(in srgb, var(--color-white) 80%, transparent);
+}
+.prose-ethos img {
+  border-radius: var(--radius-2xl, 1rem);
+  margin: 1.5em 0;
+  height: auto;
+}
+.prose-ethos figcaption {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+  text-align: center;
+  margin-top: 0.5em;
+}
+.prose-ethos table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.prose-ethos th,
+.prose-ethos td {
+  border: 1px solid var(--color-ink);
+  padding: 0.6em 0.8em;
+  text-align: left;
+}
+.prose-ethos th {
+  background: var(--color-primary);
+}
+.prose-ethos hr {
+  border: 0;
+  border-top: 1px solid var(--color-ink);
+  margin: 2em 0;
+}
+
+/* --- WordPress core block layout (for ported page bodies: .wp-body) --- */
+.wp-body {
+  max-width: none; /* full article width; blocks manage their own width */
+}
+.wp-body .wp-block-heading {
+  color: var(--color-white);
+}
+.wp-body .wp-block-image,
+.wp-body figure.wp-block-image {
+  margin: 1.5em 0;
+}
+.wp-body .wp-block-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 1rem;
+}
+.wp-body .wp-block-media-text {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin: 2em 0;
+}
+.wp-body .wp-block-media-text.has-media-on-the-right {
+  grid-template-areas: 'content media';
+}
+.wp-body .wp-block-media-text.has-media-on-the-right .wp-block-media-text__media {
+  grid-area: media;
+}
+.wp-body .wp-block-media-text.has-media-on-the-right .wp-block-media-text__content {
+  grid-area: content;
+}
+.wp-body .wp-block-media-text__media img {
+  width: 100%;
+  height: auto;
+  border-radius: 1rem;
+}
+@media (max-width: 767px) {
+  .wp-body .wp-block-media-text.is-stacked-on-mobile {
+    grid-template-columns: 1fr;
+    grid-template-areas: none;
+  }
+}
+.wp-body .wp-block-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1.5em 0;
+  padding: 0;
+  list-style: none;
+}
+.wp-body .wp-block-gallery figure {
+  margin: 0;
+}
+.wp-body .wp-block-gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
+.wp-body .wp-block-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin: 1.5em 0;
+}
+.wp-body .wp-block-column {
+  flex: 1 1 240px;
+}
+.wp-body .wp-block-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5em 0;
+}
+.wp-body .wp-block-button__link,
+.wp-body .wp-element-button {
+  display: inline-block;
+  background: var(--color-cta);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.wp-body .wp-block-details {
+  border: 1px solid var(--color-ink);
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  margin: 1.25em 0;
+  background: var(--color-card);
+}
+.wp-body .wp-block-details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--color-white);
+}
+/* Hide WP lightbox affordances (no WP JS here) */
+.wp-body .lightbox-trigger,
+.wp-body dialog.wp-lightbox-overlay {
+  display: none !important;
 }

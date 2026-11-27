@@ -7,7 +7,7 @@ import { business } from '@/data/business';
 
 const title = 'Contact';
 const description =
-  "Get in touch with Ethos Recovery. Call, email, or send a message — we'll walk you through our three programs and help find the right fit.";
+  "Get in touch with Ethos Recovery. Call us or send a message — we'll walk you through our three programs and help find the right fit.";
 
 export const metadata: Metadata = {
   title,
@@ -123,6 +123,19 @@ export default async function Page() {
                   </svg>
                 </span>
               </a>
+
+              {/* Google Map (matches the live /contact/ embed) */}
+              <div className="overflow-hidden rounded-2xl border border-ink">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3304.932253180616!2d-118.39522452426995!3d33.98319122425314!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2b87887232035%3A0x2108235721287a8a!2s3914%20Tuller%20Ave%2C%20Culver%20City%2C%20CA%2090230!5e0!3m2!1sen!2sus!4v1741184400000!5m2!1sen!2sus"
+                  title="Ethos Recovery location map"
+                  className="h-72 w-full"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+              </div>
             </div>
           </div>
         </Container>

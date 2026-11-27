@@ -19,6 +19,9 @@ const geistMono = Geist_Mono({
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+// Live GTM container id. Unset on preview so preview traffic stays out of
+// analytics; set NEXT_PUBLIC_GTM_ID=GTM-PC8G46L8 at go-live (see .env.example).
+const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -53,8 +56,25 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-page text-white">
+        {gtmId && (
+          <>
+            <Script id="gtm-init" strategy="afterInteractive">
+              {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`}
+            </Script>
+            <noscript>
+              <iframe
+                src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+                height="0"
+                width="0"
+                style={{ display: 'none', visibility: 'hidden' }}
+                title="Google Tag Manager"
+              />
+            </noscript>
+          </>
+        )}
         <SiteHeader />
-        <main className="flex-1">{children}</main>
+        {/* pb clears the fixed mobile call bar; removed from lg up */}
+        <main className="flex-1 pb-14 lg:pb-0">{children}</main>
         <SiteFooter />
         <PhoneCtaBar />
         {/* CallRail phone-swap — loads async, no visual impact */}

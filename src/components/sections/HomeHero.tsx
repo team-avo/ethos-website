@@ -1,49 +1,82 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import { Container } from '@/components/ui/Container';
 import { business } from '@/data/business';
+import { callouts } from '@/data/programs';
 
 export function HomeHero() {
   return (
-    <section className="relative isolate overflow-hidden bg-page">
-      {/* Vimeo background */}
+    <section className="relative isolate overflow-hidden bg-primary">
+      {/* Hero background image */}
       <div className="absolute inset-0 -z-20">
-        <div className="relative h-full w-full">
+        <Image
+          src={business.heroImage.src}
+          alt={business.heroImage.alt}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+      </div>
+      <div
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-primary/80 via-primary/70 to-primary/90"
+        aria-hidden="true"
+      />
+
+      <Container className="flex min-h-[70svh] flex-col justify-center py-20 lg:min-h-[860px]">
+        <div className="max-w-4xl">
+          <h1 className="text-4xl font-bold uppercase leading-tight text-white md:text-6xl lg:text-7xl">
+            Community is our method
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg text-white/90 md:text-xl">
+            Building Character, Sustaining Recovery &amp; Resilience: Your
+            Community Awaits.
+          </p>
+          <div className="mt-8">
+            <Link
+              href="/the-ethos-difference/"
+              className="inline-flex items-center gap-2 rounded-full bg-cta px-6 py-3 text-sm font-semibold text-white transition hover:brightness-110"
+            >
+              Learn More
+            </Link>
+          </div>
+        </div>
+
+        {/* Three callouts inside the hero */}
+        <div className="mt-16 grid gap-8 lg:grid-cols-3">
+          {callouts.map((item) => (
+            <div
+              key={item.title}
+              className="rounded-2xl border border-white/10 bg-primary/40 p-6 backdrop-blur-sm"
+            >
+              <h3 className="text-xl font-semibold text-white md:text-2xl">
+                {item.title}
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-white/80">
+                {item.body}
+              </p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+export function HeroVideoSection() {
+  return (
+    <section className="bg-page border-y border-ink">
+      <Container className="py-16 md:py-20">
+        <div className="relative mx-auto aspect-video w-full max-w-5xl overflow-hidden rounded-2xl border border-ink bg-primary">
           <iframe
             src={`https://player.vimeo.com/video/${business.vimeoHeroId}?background=1&muted=1&autoplay=1&loop=1&title=0&byline=0&portrait=0`}
             title="Ethos Recovery community"
-            allow="autoplay; fullscreen"
-            className="absolute inset-0 h-full w-full scale-150 object-cover"
-            loading="eager"
+            allow="autoplay; fullscreen; picture-in-picture"
+            className="absolute inset-0 h-full w-full"
+            loading="lazy"
           />
         </div>
-      </div>
-      {/* Dark wash for legibility */}
-      <div className="absolute inset-0 -z-10 bg-primary/70" aria-hidden="true" />
-
-      <div className="mx-auto flex min-h-[80svh] w-full max-w-7xl flex-col items-start justify-center gap-6 px-6 py-24 md:px-8 md:py-32">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-highlight">
-          Sober living for men · Los Angeles
-        </p>
-        <h1 className="max-w-4xl text-4xl font-bold leading-tight text-white md:text-6xl lg:text-7xl">
-          Community is <span className="text-highlight">our method</span>.
-        </h1>
-        <p className="max-w-2xl text-lg text-white/85 md:text-xl">
-          Building character, sustaining recovery and resilience. Your community awaits.
-        </p>
-        <div className="flex flex-wrap items-center gap-3 pt-2">
-          <Link
-            href="/the-ethos-difference/"
-            className="rounded-full border border-highlight bg-transparent px-6 py-3 text-sm font-semibold text-white transition hover:bg-highlight hover:text-primary"
-          >
-            Learn more
-          </Link>
-          <a
-            href={business.phone.tel}
-            className="rounded-full bg-cta px-6 py-3 text-sm font-semibold text-white transition hover:brightness-110"
-          >
-            Call {business.phone.display}
-          </a>
-        </div>
-      </div>
+      </Container>
     </section>
   );
 }

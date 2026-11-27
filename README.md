@@ -1,63 +1,73 @@
-# Ethos Website
+# Ethos Recovery — website
 
-Marketing website for Ethos — rebuilt from WordPress on Next.js + Tailwind with a design-system-first architecture.
+A static Next.js rebuild of **ethosrecovery.com**, migrated off WordPress and
+deployed on Vercel. Faithful reproduction of the live site: all pages, the full
+blog (175 posts + category/tag archives), team pages, the three interactive
+pages, and the 91 legacy redirects.
 
 ## Stack
 
-- **Next.js 15** (App Router, TypeScript, Turbopack)
-- **Tailwind CSS 4** + design tokens
-- **shadcn/ui** component primitives
-- **ESLint + Prettier** with Husky pre-commit
-- Deployed on **Vercel** (TBD)
+- **Next.js 16** (App Router, Turbopack) + **React 19**, `cacheComponents` on.
+- **Tailwind CSS 4** via `@tailwindcss/turbopack` (tokens in `src/app/globals.css`).
+- Fully static: every route is prerendered at build time. No database, no CMS.
+- `trailingSlash: true` to match the WordPress URL scheme.
 
-## Getting started
+## Content model
+
+Content is **generated from the WordPress export** in `../arh-agent-docs/wordpress-export/`
+by the scripts in `scripts/`, into `src/content/*.json` (git-committed):
+
+| Script | Produces |
+|---|---|
+| `scripts/gen-redirects.py` | `src/data/redirects.ts` (91 legacy 301s) |
+| `scripts/gen-team.py` | `src/data/team.ts` (7 members, bios + roles) |
+| `scripts/gen-blog.py` | `src/content/posts-*.json`, `taxonomies.json` + image manifest |
+| `scripts/gen-pages.py` | `src/content/pages-*.json` (ported page bodies) |
+| `scripts/download-media.py` | downloads all referenced images + the eBook PDF into `public/` |
+
+Re-run them (from this directory) after refreshing the export:
 
 ```bash
-npm install
-npm run dev
+python3 -I scripts/gen-redirects.py
+python3 -I scripts/gen-team.py
+python3 -I scripts/gen-blog.py
+python3 -I scripts/gen-pages.py
+python3 -I scripts/download-media.py   # ~49 MB into public/
 ```
 
-Site runs at [http://localhost:3000](http://localhost:3000).
+## Routes
 
-## Scripts
+- Pages: `/`, programs, guides, partners, support, legal, `/contact/`, `/outcomes/`,
+  `/meet-our-team/`, and the three interactive pages.
+- Blog: `/blog/`, `/blog/page/[n]/`, `/post/[slug]/`,
+  `/post/category/[slug]/(page/[n]/)`, `/post/tag/[slug]/(page/[n]/)`.
+- Team: `/team/[slug]/`.
 
-| Command | What it does |
-| --- | --- |
-| `npm run dev` | Start dev server (Turbopack) |
-| `npm run build` | Production build |
-| `npm start` | Run production build locally |
-| `npm run lint` | Lint all source files |
-| `npm run format` | Format with Prettier |
+Bespoke React pages: home, `/outcomes/`, `/contact/`, `/meet-our-team/`, blog.
+The remaining content pages render their WordPress body HTML (`.prose-ethos .wp-body`).
+The three interactive pages render their self-contained HTML + run their inline
+scripts client-side via `RawHtml`.
 
-## Project structure
+## Commands
 
-```
-src/
-├── app/                    # Next.js App Router pages
-│   └── (marketing)/        # Marketing route group
-├── components/             # Reusable components (shadcn/ui lives here)
-├── design-system/          # Tokens, typography, color scale, spacing
-│   ├── tokens.ts
-│   ├── colors.ts
-│   └── typography.ts
-├── lib/                    # Utilities, helpers
-└── content/                # MDX/CMS content (if applicable)
+```bash
+npm ci
+npm run dev      # Turbopack dev server on :3000
+npm run build    # static build (~266 pages)
+npm start        # serve the production build
+npm run lint
 ```
 
-## Design system
+## Environment
 
-All visual decisions route through `src/design-system/`. Don't hardcode colors, fonts, or spacing inside components — reference tokens instead. This is the key difference from the old WordPress build.
+- `NEXT_PUBLIC_SITE_URL` — canonical origin (preview URL first, real domain at go-live).
+- `NEXT_PUBLIC_GTM_ID` — Google Tag Manager id. **Leave unset on preview.** Set to
+  `GTM-PC8G46L8` at go-live.
 
-## Deployment
+## Deploy / go-live
 
-Pushes to `main` auto-deploy to Vercel (once connected). Preview deploys on every PR.
+See **[SETUP-WALKTHROUGH.md](./SETUP-WALKTHROUGH.md)** for step-by-step Vercel import
+and go-live instructions.
 
-## Contributing
-
-- Branch from `main`
-- Open a PR — no direct pushes to `main`
-- Pre-commit hooks run lint + format automatically
-
-## License
-
-Proprietary — internal to Ethos / AdvertOut.
+> The site ships with `robots: { index: false }` (layout) and a disallow-all
+> `robots.ts` — it stays non-indexable until the go-live switches are flipped.

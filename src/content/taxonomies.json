@@ -1,0 +1,101 @@
+{
+  "categories": [
+    {
+      "slug": "addiction",
+      "name": "Addiction",
+      "count": 83
+    },
+    {
+      "slug": "alcoholism",
+      "name": "Alcoholism",
+      "count": 6
+    },
+    {
+      "slug": "child-addiction",
+      "name": "Child Addiction",
+      "count": 7
+    },
+    {
+      "slug": "failure-to-launch",
+      "name": "Failure to Launch",
+      "count": 8
+    },
+    {
+      "slug": "inspiration",
+      "name": "Inspiration",
+      "count": 7
+    },
+    {
+      "slug": "mental-health",
+      "name": "Mental Health",
+      "count": 38
+    },
+    {
+      "slug": "recovery",
+      "name": "Recovery",
+      "count": 17
+    },
+    {
+      "slug": "sober-living",
+      "name": "Sober Living",
+      "count": 9
+    }
+  ],
+  "tags": [
+    {
+      "slug": "addiction",
+      "name": "addiction",
+      "count": 74
+    },
+    {
+      "slug": "alcoholism",
+      "name": "alcoholism",
+      "count": 35
+    },
+    {
+      "slug": "child-addiction",
+      "name": "child-addiction",
+      "count": 15
+    },
+    {
+      "slug": "family-intervention",
+      "name": "family-intervention",
+      "count": 12
+    },
+    {
+      "slug": "general",
+      "name": "general",
+      "count": 32
+    },
+    {
+      "slug": "inspiration",
+      "name": "inspiration",
+      "count": 19
+    },
+    {
+      "slug": "law",
+      "name": "law",
+      "count": 1
+    },
+    {
+      "slug": "mental-health",
+      "name": "mental-health",
+      "count": 59
+    },
+    {
+      "slug": "recovery",
+      "name": "recovery",
+      "count": 72
+    },
+    {
+      "slug": "sober-living",
+      "name": "sober-living",
+      "count": 27
+    },
+    {
+      "slug": "spirituality",
+      "name": "spirituality",
+      "count": 4
+    }
+  ]
+}
